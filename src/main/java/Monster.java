@@ -16,7 +16,7 @@ public class Monster {
 		return name;
 	}
 
-	public int getId() {
+	public int getPersonId() {
 		return personId;
 	}
 
@@ -45,7 +45,7 @@ public class Monster {
 	public static Monster find(int id) {
 		try(Connection con = DB.sql2o.open()) {
 			String sql = "SELECT * FROM monsters WHERE id=:id";
-			Monster monster = con.createQuery(sql);
+			Monster monster = con.createQuery(sql)
 			.addParameter("id", id)
 			.executeAndFetchFirst(Monster.class);
 			return monster;

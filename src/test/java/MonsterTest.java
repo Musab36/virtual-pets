@@ -30,7 +30,7 @@ public class MonsterTest {
 	public void equlas_returnsTrueIfNameAndPersonIdAreSame_true() {
 		 Monster testMonster = new Monster("Bubbies", 1);
 		 Monster anotherMonster = new Monster("Bubbies", 1);
-		 assertEquals(testMonster.equals(anotherMonster));
+		 assertTrue(testMonster.equals(anotherMonster));
 	}
 
 	// Saving Monsters
@@ -71,11 +71,13 @@ public class MonsterTest {
 	}
 
 	// One to many relations
-	/*
 	@Test
 	public void save_savesPersonIdIntoDB_true() {
 		Person testPerson = new Person("Henry", "henry@Henry.com");
 		testPerson.save();
-		*/
+		Monster testMonster = new Monster("Bubbies", testPerson.getId());
+		testMonster.save();
+		Monster saveMonster = Monster.find(testMonster.getId());
+		assertEquals(saveMonster.getPersonId(), testPerson.getId());
 	}
 }

@@ -24,6 +24,15 @@ public class Person {
 		return id;
 	}
 
+	public List<Monster> getMonsters() {
+		try(Connection con = DB.sql2o.open()) {
+			String sql = "SELECT * FROM monsters WHERE personId=:id";
+			return con.createQuery(sql)
+			.addParameter("id", this.id)
+			.executeAndFetch(Monster.class);
+		}
+	}
+
 	public static List<Person> all() {
 		String sql = "SELECT * FROM persons";
 		try(Connection con = DB.sql2o.open()) {
