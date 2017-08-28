@@ -32,14 +32,15 @@ public class Person {
 			.executeAndFetch(Monster.class);
 		}
 	}
-
+    /*
 	public static List<Person> all() {
 		String sql = "SELECT * FROM persons";
 		try(Connection con = DB.sql2o.open()) {
 			return con.createQuery(sql).executeAndFetch(Person.class);
 		}
 	}
-
+	*/
+      /*
 	public static Person find(int id) {
 		try(Connection con = DB.sql2o.open()) {
 			String sql = "SELECT * FROM persons WHERE id=:id";
@@ -49,6 +50,7 @@ public class Person {
 			return person;
 		}
 	}
+	*/
 
 	@Override
 	public boolean equals(Object otherPerson) {
