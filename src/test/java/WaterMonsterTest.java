@@ -116,6 +116,7 @@ public class WaterMonsterTest {
     assertEquals(testWaterMonster.getFoodLevel(), (WaterMonster.MAX_FOOD_LEVEL / 2) - 1);
     assertEquals(testWaterMonster.getSleepLevel(), (WaterMonster.MAX_SLEEP_LEVEL / 2) - 1);
     assertEquals(testWaterMonster.getPlayLevel(), (WaterMonster.MAX_PLAY_LEVEL / 2) - 1);
+    assertEquals(testWaterMonster.getWterLevel(), (WaterMonster.MAX_WATER_LEVEL / 2));
   }
 
   @Test
@@ -273,6 +274,41 @@ public class WaterMonsterTest {
     } catch (InterruptedException exception){}
     assertFalse(testWaterMonster.isAlive());
     assertTrue(testWaterMonster.getFoodLevel() >= 0);
+  }
+
+  // WaterMonster water level test
+  @Test
+  public void waterMonster_instantiatesWithHalfFullWaterLevel() {
+    WaterMonster testWaterMonster = new WaterMonster("Drippy", 1);
+    assertEquals(testWaterMonster.getWterLevel(), (WaterMonster.MAX_WATER_LEVEL / 2));
+  }
+
+  // Increasing WaterMonster water level
+  @Test
+  public void waterMonster_increasesWatereMonsterWaterLevel() {
+    WaterMonster testWaterMonster = new WaterMonster("Drippy", );
+    testWaterMonster.water();
+    assertTrue(testWaterMonster.getWterLevel() > (WaterMonster.MAX_WATER_LEVEL / 2));
+  }
+
+  // Exception test for water levels at max level
+  @Test(expected UnsupportedOperationException.class)
+  public void water_throwsExceptionIfWaterMonsterWaterLevelAtMaxLevel() {
+    WaterMonster testWaterMonster = new WaterMonster("Drippy", 1);
+    for(int i = WaterMonster.MIN_ALL_LEVELS; i <= (WaterMonster.MAX_WATER_LEVEL); i ++) {
+      testWaterMonster.water();
+    }
+  }
+
+  // Water test
+  @Test
+  public void water_recordsTimeLastWaterInDatabase() {
+    WaterMonster testWaterMonster = new WaterMonster("Bubbles", 1);
+    testWaterMonster.save();
+    testWaterMonster.water();
+    Timestamp savedWaterMonsterLastWater = WaterMonster.find(testWaterMonster.getId()).getLastWater();
+    Timestamp rightNow = new Timestamp(new Date().getTime());
+    assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedWaterMonsterLastWater));
   }
 
 }

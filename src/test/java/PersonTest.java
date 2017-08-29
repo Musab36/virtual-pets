@@ -76,11 +76,11 @@ public class PersonTest {
 	public void getMonsters_retievesAllMonstersFromTheDatabase_monsterList() {
 		Person testPerson = new Person("Henry", "henry@henry.com");
 		testPerson.save();
-		Monster firstMonster = new Monster("Bubbies", testPerson.getId());
+		FireMonster firstMonster = new FireMonster("Bubbies", testPerson.getId());
 		firstMonster.save();
-		Monster secondMonster = new Monster("Spud", testPerson.getId());
+		FireMonster secondMonster = new FireMonster("Spud", testPerson.getId());
 		secondMonster.save();
-		Monster[] monsters = new Monster[] { firstMonster, secondMonster };
+		Object[] monsters = new Object[] { firstMonster, secondMonster };
 		assertTrue(testPerson.getMonsters().containsAll(Arrays.asList(monsters)));
 	}
 }

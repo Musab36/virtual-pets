@@ -116,6 +116,7 @@ public class FireMonsterTest {
     assertEquals(testFireMonster.getFoodLevel(), (FireMonster.MAX_FOOD_LEVEL / 2) - 1);
     assertEquals(testFireMonster.getSleepLevel(), (FireMonster.MAX_SLEEP_LEVEL / 2) - 1);
     assertEquals(testFireMonster.getPlayLevel(), (FireMonster.MAX_PLAY_LEVEL / 2) - 1);
+    assertEquals(testFireMonster.getFireLevel(), (FireMonster.MAX_FIRE_LEVEL / 2) - 1);
   }
 
   @Test
@@ -273,6 +274,33 @@ public class FireMonsterTest {
     } catch (InterruptedException exception){}
     assertFalse(testFireMonster.isAlive());
     assertTrue(testFireMonster.getFoodLevel() >= 0);
+  }
+  
+  // FireMonster Fire level test
+  @Test
+  public void fireMonster_instantiatesWithHalfFullFireLevel() {
+    FireMonster testFireMonster = new FireMonster("Smokey", 1);
+    assertEquals(testFireMonster.getFireLevel(), (FireMonster.MAX_FIRE_LEVEL / 2));
+  }
+
+  // FireMonster Fire level increasing test
+  @Test
+  public void kindling_increasesFireMonsterFireLevel() {
+    FireMonster testFireMonster = new FireMonster("Smokey", 1);
+    testFireMonster.kindling();
+    Timestamp savedFireMonsterLastKindling = FireMonster.find(testFireMonster.getId()).getLastKindling();
+    Timestamp rightNow = new Timestamp(new Date().getTime());
+    assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedFireMonsterLastKindling));
+    assertTrue(testFireMonster.getFireLevel() > (FireMonster.MAX_FIRE_LEVEL / 2));
+  }
+
+  // Exception test for maxed out firelevel
+  @Test(expected = UnsupportedOperationException.class)
+  public void kindling_throwsExceptionIfFireLevelIsAtMaxValue(){
+    FireMonster testFireMonster = new FireMonster("Smokey", 1);
+    for(int i = FireMonster.MIN_ALL_LEVELS; i <= (FireMonster.MAX_FIRE_LEVEL); i++){
+      testFireMonster.kindling();
+    }
   }
 
 }

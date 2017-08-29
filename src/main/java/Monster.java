@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 
 public abstract class Monster {
+  public String type;	
   public String name;
   public int personId;
   public int id;
@@ -116,12 +117,17 @@ public abstract class Monster {
 		return lastPlayed;
 	}
 
+	public Timestamp getLastAte() {
+		return lastAte;
+	}
+
 	public void save() {
 		try(Connection con = DB.sql2o.open()) {
 			String sql = "INSERT INTO monsters (name, personId, birthday) VALUES (:name, :personId, now())";
 			this.id = (int) con.createQuery(sql, true)
 			.addParameter("name", this.name)
 			.addParameter("personId", this.personId)
+			.addParameter("type", this.type)
 			.executeUpdate()
 			.getKey();
 		}
@@ -133,8 +139,8 @@ public abstract class Monster {
 			return con.createQuery(sql).executeAndFetch(Monster.class);
 		}
 	}
-	*/
-    /*
+
+	
 	public static Monster find(int id) {
 		try(Connection con = DB.sql2o.open()) {
 			String sql = "SELECT * FROM monsters WHERE id=:id";
@@ -145,6 +151,7 @@ public abstract class Monster {
 		}
 	}
 	*/
+
 
 	@Override
 	public boolean equals(Object otherMonster) {

@@ -24,23 +24,34 @@ public class Person {
 		return id;
 	}
 
-	public List<Monster> getMonsters() {
+	public List<Object> getMonsters() {
+		List<Object> allMonsters = new ArrayList<Object>();
 		try(Connection con = DB.sql2o.open()) {
-			String sql = "SELECT * FROM monsters WHERE personId=:id";
-			return con.createQuery(sql)
+			String sqlFire = "SELECT * FROM monsters WHERE personId=:id AND type='fire'";
+			List<FireMonster> fireMonsters = con.createQuery(sqlFire)
 			.addParameter("id", this.id)
-			.executeAndFetch(Monster.class);
+			.throwOnMappingFailure(false)
+			.executeAndFetch(FireMonster.class);
+			allMonsters.addAll(fireMonsters);
+
+			String sqlWater = "SELEC * FROM monsters WHERE personId=:id AND tyep='water'";
+			List<WaterMonster> waterMonsters = con.createQuery(sqlWater)
+			.addParameter("id", this.id)
+			.throwOnMappingFailure(false)
+			.executeAndFetch(WaterMonster.class);
+			allMonsters.addAll(waterMonsters);
+
+			return allMonsters;
 		}
 	}
-    /*
+   
 	public static List<Person> all() {
 		String sql = "SELECT * FROM persons";
 		try(Connection con = DB.sql2o.open()) {
 			return con.createQuery(sql).executeAndFetch(Person.class);
 		}
 	}
-	*/
-      /*
+
 	public static Person find(int id) {
 		try(Connection con = DB.sql2o.open()) {
 			String sql = "SELECT * FROM persons WHERE id=:id";
@@ -50,7 +61,6 @@ public class Person {
 			return person;
 		}
 	}
-	*/
 
 	@Override
 	public boolean equals(Object otherPerson) {
