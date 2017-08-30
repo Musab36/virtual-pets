@@ -83,4 +83,16 @@ public class PersonTest {
 		Object[] monsters = new Object[] { firstMonster, secondMonster };
 		assertTrue(testPerson.getMonsters().containsAll(Arrays.asList(monsters)));
 	}
+
+	// Getting communities a person belongs to
+	@Test
+	public void getCommunities_ReturnAllCommunites_List() {
+		Community testCommunity = new Community("Fire Enthusiasts", "Flame on!");
+		testCommunity.save();
+		Person testPerson = new Person("Henry", "[email protected]");
+		testPerson.save();
+		testCommunity.addPerson(testPerson);
+		List savedCommunities = testPerson.getCommunities();
+		assertEquals(1, savedCommunities.size());
+	}
 }

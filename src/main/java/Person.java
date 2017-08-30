@@ -44,6 +44,26 @@ public class Person {
 			return allMonsters;
 		}
 	}
+
+	public List<Community> getCommunities() {
+		try(Connection con = DB.sql.open()) {
+			String joinQuery = "SELECT community_id FROM communities_persons WHERE personId = :personId";
+			List<Integer> communityIds = con.createQuery(joinQuery)
+			.addParameter("personId", this.getId())
+			.executeAndFetch(Integer.class);
+
+			List<Community> communities = new ArrayList<Community>();
+
+			for(Integer communityid : communityIds) {
+				String communityQuery = "SELECT * FROM communities WHERE id = :community_id";
+				Community community = con.createQuery(communityQuery)
+				.addParameter("communityId", communityId)
+				.executeAndFetchFirst(Community.class)
+				communities.add(community);
+			}
+			return communities;
+		}
+	}
    
 	public static List<Person> all() {
 		String sql = "SELECT * FROM persons";
